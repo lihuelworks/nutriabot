@@ -1,0 +1,23 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "a discord bot for yoel, called nutriabot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lihuelworks/nutriabot.git"
+  },
+  "author": "lihuelworks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lihuelworks/nutriabot/issues"
+  },
+  "homepage": "https://github.com/lihuelworks/nutriabot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}
