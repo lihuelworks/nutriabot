@@ -1,25 +1,38 @@
 'use strict';
 
-/**
- * An example of how you can send embeds
- */
+/// CONFIG ZONE ------------------------
 
-// Extract the required classes from the discord.js module
-const { Client, MessageEmbed } = require('discord.js');
+// require the discord.js module
+const Discord = require('discord.js');
 
-// Create an instance of a Discord client
-const client = new Client();
+// Require config file
+const config = require('./config.json');
+
+// create a new Discord client
+const client = new Discord.Client();
+
+/// CODE ZONE ------------------------
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
  * received from Discord
  */
-client.on('ready', () => {
+client.once('ready', () => {
   console.log('Nutriabot está online!');
 });
 
+
 client.on('message', message => {
-  console.log(msg.content);
+  console.log(message.content);
+  if (message.content === '!ping') {
+    // send back "Pong." to the channel the message was sent in
+    message.channel.send('Pong.');
+  }
+});
+
+
+client.on('message', message => {
+  console.log(message.content);
   // If the message is "how to embed"
   if (message.content === 'how to embed') {
     // We can create embeds using the MessageEmbed constructor
@@ -37,5 +50,8 @@ client.on('message', message => {
   }
 });
 
+/// NO CODE FROM HERE
+/// LOGIN ZONE ------------------------
+
 // Log our bot in using the token from https://discord.com/developers/applications
-client.login('Nzg2ODUwNzI4MDAxNDA0OTk5.X9MZ2A.AHJVCWRYOFsx4wLgpweN6DGiXYg');
+client.login(config.token);
