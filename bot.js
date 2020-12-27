@@ -19,6 +19,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
+  console.log(msg.content);
   // If the message is "how to embed"
   if (message.content === 'how to embed') {
     // We can create embeds using the MessageEmbed constructor
