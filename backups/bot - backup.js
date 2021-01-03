@@ -2,9 +2,6 @@
 
 /// CONFIG ZONE ------------------------
 
-//require Node's native file system module
-const fs = require("fs");
-
 // require the discord.js module
 const Discord = require("discord.js");
 
@@ -13,21 +10,6 @@ const { prefix, token } = require("./config.json");
 
 // create a new Discord client
 const client = new Discord.Client();
-
-//create a new Discord collection class from Discord JS. Needed to use commands
-client.commands = new Discord.Collection();
-//retrieve all filenames on ./commands, and filter those whcih end in .js into an array
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
-//loop array to import commands
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-
-  // set a new item in the Collection
-  // with the key as the command name and the value as the exported module
-  client.commands.set(command.name, command);
-}
 
 /// CODE ZONE ------------------------
 
@@ -83,7 +65,7 @@ client.on("message", (message) => {
     // by default, discord.js will `.join()` the array with `\n`
     message.channel.send(avatarList);
   } else if (command === "prune") {
-    const amount = parseInt(args[0]) + 1;
+    const amount = parseInt(args[0])+ 1;
     console.log(`Argumento de prune --> ${args[0]}`);
     if (isNaN(amount)) {
       return message.reply("that doesn't seem to be a valid number.");
@@ -97,6 +79,8 @@ client.on("message", (message) => {
         );
       });
     }
+
+    // ...
   }
 });
 
