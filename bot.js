@@ -49,6 +49,12 @@ client.on('message', (message) => {
 	// command: var with object of command, gotten from client.commands (which is a Collection on my commands)
 	const command = client.commands.get(commandName);
 
+
+	// check if arguments were provided
+	if (command.args && !args.length) {
+		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+	}
+
 	// COMMANDS HANDLER
 	try {
 		client.commands.get(commandName).execute(message, args);
