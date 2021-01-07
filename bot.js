@@ -23,8 +23,8 @@ const commandFiles = fs
 // loop array to import commands
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-
-	// set a new item in the Collection
+	console.log(command);
+	// set a new item in the Collection created in var commands
 	// with the key as the command name and the value as the exported module
 	client.commands.set(command.name, command);
 }
@@ -40,16 +40,18 @@ client.once('ready', () => {
 });
 
 client.on('message', (message) => {
-	// if message doesnt start with prefix or is sent by bot, exit early
+	// if message doesnt start with prefix or its is sent by bot, exit early
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 	// make var out of message, taking out prefix and spliting into array by spaces
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	// return 1st element in args array and lowercase it
-	const command = args.shift().toLowerCase();
+	// commandName: var with return 1st element in args var array and lowercase it
+	const commandName = args.shift().toLowerCase();
+	// command: var with object of command, gotten from client.commands (which is a Collection on my commands)
+	const command = client.commands.get(commandName);
 
-	// COMMANDS
+	// COMMANDS HANDLER
 	try {
-		client.commands.get(command).execute(message, args);
+		client.commands.get(commandName).execute(message, args);
 	}
 	catch (error) {
 		console.error(error);
