@@ -63,6 +63,10 @@ client.on('message', (message) => {
 	const command = client.commands.get(commandName);
 	// debug check: whats inside command obj?
 	// console.log(command);
+	// CHECK: is the command being called in the DM's? Does it work there (is property guildOnly set to "true")?
+	if (command.guildOnly && message.channel.type === 'dm') {
+		return message.reply('I can\'t execute that command inside DMs!');
+	}
 
 	// CHECK: were arguments provided?
 	// (Only checked if args property in command file is set to 'true')

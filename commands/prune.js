@@ -1,5 +1,9 @@
 module.exports = {
 	name: 'prune',
+	args: true,
+	guildOnly: true,
+	cooldown: 5,
+	usage: '<numero de mensajes a borrar>',
 	description: 'Bulk deletes n number of messages per number in argument',
 	execute(message, args) {
 		const amount = parseInt(args[0]) + 1;
