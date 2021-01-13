@@ -52,17 +52,21 @@ client.on('message', (message) => {
 	// CHECK: if message doesnt start with prefix or its is sent by bot, exit early
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
+	// FIXES
 	// make var out of message, taking out prefix and spliting into array by spaces
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	// commandName: var with return 1st element in args var array and lowercase it
 	const commandName = args.shift().toLowerCase();
 
-	// CHECK: does command exist inside of commands Collection?
-	if (!client.commands.has(commandName)) return;
+	// CHECK: does command exist inside of commands Collection? It will also check if it has the aliases property and if commandName is included in the array of such property
 	// command: var with object of command, gotten from client.commands (which is a Collection on my commands).
-	const command = client.commands.get(commandName);
+	const command = client.commands.get(commandName)
+		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	// after the asignment of var, is it undefined? If so, return
 	// debug check: whats inside command obj?
-	// console.log(command);
+	console.log(command);
+	if (!command) return;
+
 	// CHECK: is the command being called in the DM's? Does it work there (is property guildOnly set to "true")?
 	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply('I can\'t execute that command inside DMs!');
@@ -71,6 +75,7 @@ client.on('message', (message) => {
 	// CHECK: were arguments provided?
 	// (Only checked if args property in command file is set to 'true')
 	if (command.args && !args.length) {
+		console.log('args check hit!');
 		let reply = `You didn't provide any arguments, ${message.author}!`;
 		if (command.usage) {
 			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
@@ -80,6 +85,7 @@ client.on('message', (message) => {
 
 	// CHECK: does command have cooldowns? If so, enforce them
 	if (!cooldowns.has(command.name)) {
+		// console.log('cooldonws check hit!');
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 
@@ -113,10 +119,12 @@ client.on('message', (message) => {
 
 	// COMMANDS HANDLER
 	try {
-		client.commands.get(commandName).execute(message, args);
+		command.execute(message, args);
 	}
 	catch (error) {
-		console.error(error);
+		console.error(`-----------------
+		The error was:
+		${error}`);
 		message.reply('there was an error trying to execute that command!');
 	}
 });

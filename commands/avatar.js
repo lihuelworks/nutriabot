@@ -1,21 +1,16 @@
 module.exports = {
 	name: 'avatar',
-	description: 'Gives avatar URL of all users mentioned. If none mentioned, gives URL of sender.',
-	execute(message, args) {
+	description: 'Get the avatar URL of the tagged user(s), or your own avatar.',
+	aliases: ['icon', 'pfp'],
+	execute(message) {
 		if (!message.mentions.users.size) {
-			return message.channel.send(
-				`Your avatar: <${message.author.displayAvatarURL({
-					format: 'png',
-					dynamic: true,
-				})}>`,
-			);
+			return message.channel.send(`Your avatar: <${message.author.displayAvatarURL({ dynamic: true })}>`);
 		}
+
 		const avatarList = message.mentions.users.map(user => {
-			return `${user.username}'s avatar: <${user.displayAvatarURL({ format: 'png', dynamic: true })}>`;
+			return `${user.username}'s avatar: <${user.displayAvatarURL({ dynamic: true })}>`;
 		});
-		console.log(avatarList);
-		// send the entire array of strings as a message
-		// by default, discord.js will `.join()` the array with `\n`
+
 		message.channel.send(avatarList);
 	},
 };
