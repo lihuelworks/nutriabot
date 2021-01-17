@@ -16,6 +16,9 @@ module.exports = {
 
 			return message.author.send(data, { split: true })
 				.then(() => {
+					// this proves that the message being evaulated is the on initially sent, and not the one sent above in the return (in message.author.send(etc))
+					// console.log('---Promise succesful!');
+					// console.log(`message channels is: ${message.channel}, message types is ${message.channel.type}, and message object is: ${message}`);
 					if (message.channel.type === 'dm') return;
 					message.reply('I\'ve sent you a DM with all my commands!');
 				})
