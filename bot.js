@@ -20,7 +20,7 @@ const cooldowns = new Discord.Collection();
 // create property on client Class. It's a Collection type, will cointain all commands importaed from ./commands folder
 client.commands = new Discord.Collection();
 
-// command ipmort: retrieve all filenames on ./commands, and filter those whcih end in .js into an array
+// command import: retrieve all filenames on ./commands, and filter those whcih end in .js into an array
 const commandFiles = fs
 	.readdirSync('./commands')
 	.filter((file) => file.endsWith('.js'));
@@ -72,6 +72,14 @@ client.on('message', (message) => {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
 
+	// CHECK: command permissions
+	if (command.permissions) {
+		const authorPerms = message.channel.permissionsFor(message.author);
+		if (!authorPerms || !authorPerms.has(command.permissions)) {
+			return message.reply('You can not do this!');
+		}
+	}
+
 	// CHECK: were arguments provided?
 	// (Only checked if args property in command file is set to 'true')
 	if (command.args && !args.length) {
@@ -82,6 +90,7 @@ client.on('message', (message) => {
 		}
 		return message.channel.send(reply);
 	}
+
 
 	// CHECK: does command have cooldowns? If so, enforce them
 	if (!cooldowns.has(command.name)) {
