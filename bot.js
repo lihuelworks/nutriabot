@@ -1,78 +1,49 @@
 'use strict';
 
-/// CONFIG ZONE ------------------------
-
-// require Node's native file system module
 const fs = require('fs');
 
-// require the discord.js module
 const Discord = require('discord.js');
 
-// Require config file
 const { prefix, token } = require('./config.json');
 
-// create a new Discord client
 const client = new Discord.Client();
 
-// cooldowns: Collection var that will contain cooldowns of commands
 const cooldowns = new Discord.Collection();
 
-// create property on client Class. It's a Collection type, will cointain all commands importaed from ./commands folder
 client.commands = new Discord.Collection();
 
-// command import: retrieve all filenames on ./commands, and filter those whcih end in .js into an array
 const commandFiles = fs
 	.readdirSync('./commands')
 	.filter((file) => file.endsWith('.js'));
-// loop array to import commands
+
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	// console.log(command);
-	// set a new item in the Collection created in var commands
-	// with the key as the command name and the value as the exported module
+
 	client.commands.set(command.name, command);
 }
 
-
-/// CODE ZONE ------------------------
-
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
-
-// READY event
 client.once('ready', () => {
 	console.log('Nutriabot está online!');
 });
 
-// COMMMAND checker and handler
 client.on('message', (message) => {
-	// CHECKS and fixes
-	// CHECK: if message doesnt start with prefix or its is sent by bot, exit early
+
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	// FIXES
-	// make var out of message, taking out prefix and spliting into array by spaces
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	// commandName: var with return 1st element in args var array and lowercase it
+
 	const commandName = args.shift().toLowerCase();
 
-	// CHECK: does command exist inside of commands Collection? It will also check if it has the aliases property and if commandName is included in the array of such property
-	// command: var with object of command, gotten from client.commands (which is a Collection on my commands).
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	// after the asignment of var, is it undefined? If so, return
-	// debug check: whats inside command obj?
+
 	console.log(command);
 	if (!command) return;
 
-	// CHECK: is the command being called in the DM's? Does it work there (is property guildOnly set to "true")?
 	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
 
-	// CHECK: command permissions
 	if (command.permissions) {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (!authorPerms || !authorPerms.has(command.permissions)) {
@@ -80,8 +51,6 @@ client.on('message', (message) => {
 		}
 	}
 
-	// CHECK: were arguments provided?
-	// (Only checked if args property in command file is set to 'true')
 	if (command.args && !args.length) {
 		console.log('args check hit!');
 		let reply = `You didn't provide any arguments, ${message.author}!`;
@@ -91,10 +60,8 @@ client.on('message', (message) => {
 		return message.channel.send(reply);
 	}
 
-
-	// CHECK: does command have cooldowns? If so, enforce them
 	if (!cooldowns.has(command.name)) {
-		// console.log('cooldonws check hit!');
+
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 
@@ -126,7 +93,6 @@ client.on('message', (message) => {
  */
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
-	// COMMANDS HANDLER
 	try {
 		command.execute(message, args);
 	}
@@ -138,29 +104,20 @@ client.on('message', (message) => {
 	}
 });
 
-// COMMAND: how to embed example
-
 /* client.on('message', message => {
-  //  console.log(message.content);
-  // If the message is "how to embed"
+
   if (message.content === 'how to embed') {
-    // We can create embeds using the MessageEmbed constructor
-    // Read more about all that you can do with the constructor
-    // over at https://discord.js.org/#/docs/main/master/class/MessageEmbed
+
     const embed = new MessageEmbed()
-      // Set the title of the field
+
       .setTitle('A slick little embed')
-      // Set the color of the embed
+
       .setColor(0xff0000)
-      // Set the main content of the embed
+
       .setDescription('Hello, this is a slick embed!');
-    // Send the embed to the same channel as the message
+
     message.channel.send(embed);
   }
 }); */
 
-/// NO CODE FROM HERE
-/// LOGIN ZONE ------------------------
-
-// Log our bot in using the token from https://discord.com/developers/applications
 client.login(token);

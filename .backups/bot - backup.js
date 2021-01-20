@@ -1,15 +1,38 @@
-"use strict";
+'use strict';
 
 /// CONFIG ZONE ------------------------
 
+// require Node's native file system module
+const fs = require('fs');
+
 // require the discord.js module
-const Discord = require("discord.js");
+const Discord = require('discord.js');
 
 // Require config file
-const { prefix, token } = require("./config.json");
+const { prefix, token } = require('./config.json');
 
 // create a new Discord client
 const client = new Discord.Client();
+
+// cooldowns: Collection var that will contain cooldowns of commands
+const cooldowns = new Discord.Collection();
+
+// create property on client Class. It's a Collection type, will cointain all commands importaed from ./commands folder
+client.commands = new Discord.Collection();
+
+// command import: retrieve all filenames on ./commands, and filter those whcih end in .js into an array
+const commandFiles = fs
+	.readdirSync('./commands')
+	.filter((file) => file.endsWith('.js'));
+// loop array to import commands
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	// console.log(command);
+	// set a new item in the Collection created in var commands
+	// with the key as the command name and the value as the exported module
+	client.commands.set(command.name, command);
+}
+
 
 /// CODE ZONE ------------------------
 
@@ -17,87 +40,103 @@ const client = new Discord.Client();
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
  * received from Discord
  */
-client.once("ready", () => {
-  console.log("Nutriabot está online!");
+
+// READY event
+client.once('ready', () => {
+	console.log('Nutriabot está online!');
 });
 
-client.on("message", (message) => {
-  // if message doesnt start with prefix or is sent by bot, exit early
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-  // make var out of message, taking out prefix and spliting into array by spaces
-  const args = message.content.slice(prefix.length).trim().split(/ +/);
-  //return 1st element in args array and lowercase it
-  const command = args.shift().toLowerCase();
+// COMMMAND checker and handler
+client.on('message', (message) => {
+	// CHECKS and fixes
+	// CHECK: if message doesnt start with prefix or its is sent by bot, exit early
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  //test command
-  if (command === "args-info") {
-    if (!args.length) {
-      return message.channel.send(
-        `You didn't provide any arguments, ${message.author}!`
-      );
-    }
+	// FIXES
+	// make var out of message, taking out prefix and spliting into array by spaces
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	// commandName: var with return 1st element in args var array and lowercase it
+	const commandName = args.shift().toLowerCase();
 
-    message.channel.send(`Command name: ${command}\nArguments: ${args}`);
-  } else if (command === "kick") {
-    // grab the "first" mentioned user from the message
-    // this will return a `User` object, just like `message.author`
-    const taggedUser = message.mentions.users.first();
-    if (!message.mentions.users.size) {
-      return message.reply("you need to tag a user in order to kick them!");
-    }
-    message.channel.send(`You wanted to kick: ${taggedUser.username}`);
-  } else if (command === "avatar") {
-    if (!message.mentions.users.size) {
-      return message.channel.send(
-        `Your avatar: <${message.author.displayAvatarURL({
-          format: "png",
-          dynamic: true,
-        })}>`
-      );
-    }
-    const avatarList = message.mentions.users.map((user) => {
-      return `${user.username}'s avatar: <${user.displayAvatarURL({
-        format: "png",
-        dynamic: true,
-      })}>`;
-    });
-    // send the entire array of strings as a message
-    // by default, discord.js will `.join()` the array with `\n`
-    message.channel.send(avatarList);
-  } else if (command === "prune") {
-    const amount = parseInt(args[0])+ 1;
-    console.log(`Argumento de prune --> ${args[0]}`);
-    if (isNaN(amount)) {
-      return message.reply("that doesn't seem to be a valid number.");
-    } else if (amount <= 1 || amount > 100) {
-      return message.reply("you need to input a number between 2 and 100.");
-    } else {
-      message.channel.bulkDelete(amount, true).catch((err) => {
-        console.error(err);
-        message.channel.send(
-          "there was an error trying to prune messages in this channel!"
-        );
-      });
-    }
+	// CHECK: does command exist inside of commands Collection? It will also check if it has the aliases property and if commandName is included in the array of such property
+	// command: var with object of command, gotten from client.commands (which is a Collection on my commands).
+	const command = client.commands.get(commandName)
+		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	// after the asignment of var, is it undefined? If so, return
+	// debug check: whats inside command obj?
+	console.log(command);
+	if (!command) return;
 
-    // ...
-  }
+	// CHECK: is the command being called in the DM's? Does it work there (is property guildOnly set to "true")?
+	if (command.guildOnly && message.channel.type === 'dm') {
+		return message.reply('I can\'t execute that command inside DMs!');
+	}
+
+	// CHECK: command permissions
+	if (command.permissions) {
+		const authorPerms = message.channel.permissionsFor(message.author);
+		if (!authorPerms || !authorPerms.has(command.permissions)) {
+			return message.reply('You can not do this!');
+		}
+	}
+
+	// CHECK: were arguments provided?
+	// (Only checked if args property in command file is set to 'true')
+	if (command.args && !args.length) {
+		console.log('args check hit!');
+		let reply = `You didn't provide any arguments, ${message.author}!`;
+		if (command.usage) {
+			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+		}
+		return message.channel.send(reply);
+	}
+
+
+	// CHECK: does command have cooldowns? If so, enforce them
+	if (!cooldowns.has(command.name)) {
+		// console.log('cooldonws check hit!');
+		cooldowns.set(command.name, new Discord.Collection());
+	}
+
+	const now = Date.now();
+	const timestamps = cooldowns.get(command.name);
+	const cooldownAmount = (command.cooldown || 3) * 1000;
+
+	/* console.log(`cooldowns inside:
+	${[...cooldowns.entries()]}`); */
+
+	if (timestamps.has(message.author.id)) {
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+		}
+	}
+
+	/* console.log(`cooldowns AFTER:
+	${[...cooldowns.entries()]}`);
+ */
+	timestamps.set(message.author.id, now);
+	/* console.log(`timeout inside:
+	${[...timestamps.entries()]}`); */
+
+	/* console.log(`cooldowns AFTER TWO:
+	${[...cooldowns.entries()]}`);
+ */
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+	// COMMANDS HANDLER
+	try {
+		command.execute(message, args);
+	}
+	catch (error) {
+		console.error(`-----------------
+		The error was:
+		${error}`);
+		message.reply('there was an error trying to execute that command!');
+	}
 });
-
-// COMMAND: --nutrias _ da fecha de inicio de server y num de usuarios
-
-/* client.on('message', message => {
-  console.log(message.content);
-  if (message.content === '!ping') {
-    // send back "Pong." to the channel the message was sent in
-    message.channel.send('Pong.');
-  } else if (message.content === `${prefix}nutrias`) {
-    message.channel.send(`
-    En ${message.guild.name} somos un total de...
-    ${message.guild.memberCount} usuarios!
-    🌊🦦🌊...`);
-  }
-}); */
 
 // COMMAND: how to embed example
 
