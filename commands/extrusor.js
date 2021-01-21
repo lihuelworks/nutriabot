@@ -4,7 +4,7 @@ module.exports = {
 	execute(message) {
 		const extrusorEmbed = {
 			'embed': {
-				'title': 'Como funciona el cambio de filamento?',
+				'title': '¿Que es el extrusor? ¿Cual recomiendo yo?',
 				'color': '#202225 ',
 				'thumbnail': {
 					'url': 'https://cdn11.bigcommerce.com/s-mm9wpa/images/stencil/original/products/1629/6949/bondtech-extruder-kit-bmg-standard-1.75_01-3d-printer-1000x1000__95738.1609383766.jpg?c=2',
@@ -30,15 +30,14 @@ module.exports = {
 
 					{
 						'name': '⠀',
-						'value': '_👇🏾 Guía para elegir el extrusor de tu impresora 3D - Bitfab 👇🏾 _',
+						'value': '*_👇🏾 Guía para elegir el extrusor de tu impresora 3D - Bitfab 👇🏾 _*',
 					},
 				],
 			},
 		};
 
 		message.channel.send(extrusorEmbed);
-		message.channel.send(
-			'https://bitfab.io/es/blog/extrusor-impresora-3d/');
+		message.channel.send('https://bitfab.io/es/blog/extrusor-impresora-3d/');
 		return;
 	},
 };

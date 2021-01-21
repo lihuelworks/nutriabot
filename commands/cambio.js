@@ -30,7 +30,7 @@ module.exports = {
 
 					{
 						'name': '⠀',
-						'value': '_👇🏾 Podes ver más del tema en mi canal 👇🏾_',
+						'value': '*_👇🏾 Podes ver más del tema en mi canal 👇🏾_*',
 					},
 				],
 			},

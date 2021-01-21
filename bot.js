@@ -37,7 +37,7 @@ client.on('message', (message) => {
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-	console.log(command);
+	// console.log(command);
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
@@ -52,7 +52,7 @@ client.on('message', (message) => {
 	}
 
 	if (command.args && !args.length) {
-		console.log('args check hit!');
+		// console.log('args check hit!');
 		let reply = `You didn't provide any arguments, ${message.author}!`;
 		if (command.usage) {
 			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;

@@ -1,8 +1,8 @@
 const { prefix } = require('../config.json');
 
 module.exports = {
-	name: 'help',
-	description: 'List all of my commands or infoa bout a specific command',
+	name: 'ayuda',
+	description: 'Lista todos los comandos, o info particular sobre un comando específo',
 	aliases: ['commands'],
 	usage: '[command name]',
 	cooldown: 5,
@@ -10,9 +10,9 @@ module.exports = {
 		const data = [];
 		const { commands } = message.client;
 		if (!args.length) {
-			data.push('Here\'s a list of all my commands:');
+			data.push('Acá hay una lista de todos los comandos:');
 			data.push(commands.map(command => command.name).join(', '));
-			data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+			data.push(`\nPodes enviar \`${prefix}ayuda [nombre del comando]\` para obtener ayuda de un comando específico!`);
 
 			return message.author.send(data, { split: true })
 				.then(() => {
@@ -20,11 +20,12 @@ module.exports = {
 					// console.log('---Promise succesful!');
 					// console.log(`message channels is: ${message.channel}, message types is ${message.channel.type}, and message object is: ${message}`);
 					if (message.channel.type === 'dm') return;
-					message.reply('I\'ve sent you a DM with all my commands!');
+					message.reply(`Te envié un DM con todos mis comandos  ${message.author.usename}!`);
 				})
 				.catch(error => {
-					console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-					message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
+					console.error(`No se pudo enviar el DM a ${message.author.tag}.\n`, error);
+					message.reply('No se pudo enviar el DM. ¿Tenes los DM deshabilitados? Prueba investigarlo bajo el siguiente link (Ver sección "AUDIENCIA SELECTIVA: EDICIÓN “MENSAJE DIRECTO”"):');
+					message.channel.send('https://support.discord.com/hc/es/articles/217916488-Ajustes-de-bloqueo-y-privacidad');
 				});
 		}
 		const name = args[0].toLowerCase();
