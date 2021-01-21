@@ -1,7 +1,7 @@
 {
   "name": "nutriabot",
   "version": "1.0.0",
-  "description": "a discord bot for yoel, called nutriabot",
+  "description": "a discord bot for a 3D printing channel, called nutriabot",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
