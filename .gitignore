@@ -105,3 +105,6 @@ dist
 
 # ESlint config file
 .eslintrc.json
+
+#ignore config (with token)
+config.json
