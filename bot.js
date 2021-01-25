@@ -37,7 +37,6 @@ client.on('message', (message) => {
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-	// console.log(command);
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
@@ -88,9 +87,6 @@ client.on('message', (message) => {
 	/* console.log(`timeout inside:
 	${[...timestamps.entries()]}`); */
 
-	/* console.log(`cooldowns AFTER TWO:
-	${[...cooldowns.entries()]}`);
- */
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	try {
@@ -103,21 +99,5 @@ client.on('message', (message) => {
 		message.reply('there was an error trying to execute that command!');
 	}
 });
-
-/* client.on('message', message => {
-
-  if (message.content === 'how to embed') {
-
-    const embed = new MessageEmbed()
-
-      .setTitle('A slick little embed')
-
-      .setColor(0xff0000)
-
-      .setDescription('Hello, this is a slick embed!');
-
-    message.channel.send(embed);
-  }
-}); */
 
 client.login(token);
