@@ -43,11 +43,11 @@
 ### Ejemplos
 
 <p align="center">
-    <img src="./img/ejemplo_nozzle.gif" alt="ayuda" width="500" height="150">
+    <img src="./img/ejemplo_nozzle.gif" alt="ayuda" width="500">
   <br>
-  <img src="./img/ejemplo_ayuda.png" alt="ayuda" width="500" height="150"></a>
+  <img src="./img/ejemplo_ayuda.png" alt="ayuda" width="500"></a>
   <br>
-  <img src="./img/ejemplo_prune.gif" alt="prune"  width="500" height="150"></a>
+  <img src="./img/ejemplo_prune.gif" alt="prune"  width="500"></a>
   <br>
 </p>
 
