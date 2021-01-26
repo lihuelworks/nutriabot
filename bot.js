@@ -40,21 +40,21 @@ client.on('message', (message) => {
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
-		return message.reply('I can\'t execute that command inside DMs!');
+		return message.reply('No puedo ejecutar éste comando dentro de DMs!');
 	}
 
 	if (command.permissions) {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (!authorPerms || !authorPerms.has(command.permissions)) {
-			return message.reply('You can not do this!');
+			return message.reply('No tenes permisos de ejecutar éste comando!');
 		}
 	}
 
 	if (command.args && !args.length) {
 		// console.log('args check hit!');
-		let reply = `You didn't provide any arguments, ${message.author}!`;
+		let reply = `No ingresaste ningún argumento, ${message.author}!`;
 		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+			reply += `\nEl uso esperado del comando es: \`${prefix}${command.name} ${command.usage}\``;
 		}
 		return message.channel.send(reply);
 	}
@@ -76,7 +76,7 @@ client.on('message', (message) => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(`por favor espere ${timeLeft.toFixed(1)} segundos más antes de reusar el comando \`${command.name}\`.`);
 		}
 	}
 
@@ -96,7 +96,7 @@ client.on('message', (message) => {
 		console.error(`-----------------
 		The error was:
 		${error}`);
-		message.reply('there was an error trying to execute that command!');
+		message.reply('hubo un error al tratar de ejecutar el comando, por favor consulte a un administrador al respecto');
 	}
 });
 
