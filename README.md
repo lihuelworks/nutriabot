@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center"><strong>Bot de Discord para canales de Youtube orientado a impresión 3D.</strong></h4>
+<h4 align="center"><strong>Bot de Discord para servers orientados a la impresión 3D.</strong></h4>
 
 <p align="center">
   <a href="##funciones-principales">Funciones principales</a> •
