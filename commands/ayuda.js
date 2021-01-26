@@ -20,7 +20,7 @@ module.exports = {
 					// console.log('---Promise succesful!');
 					// console.log(`message channels is: ${message.channel}, message types is ${message.channel.type}, and message object is: ${message}`);
 					if (message.channel.type === 'dm') return;
-					message.reply(`Te envié un DM con todos mis comandos!`);
+					message.reply('Te envié un DM con todos mis comandos!');
 				})
 				.catch(error => {
 					console.error(`No se pudo enviar el DM a ${message.author.tag}.\n`, error);
