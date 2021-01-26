@@ -1,9 +1,9 @@
-<h2 align="center">
+<h1 align="center">
   <br>
   <img src=".\img\discorbot_logo.svg" alt="Nutriabot" width="150">
-</h2>
-<h1 align="center">
+  <br>
   <strong>Nutriabot</strong>
+  <br>
 </h1>
 
 <h4 align="center"><strong>Bot de Discord para canales de Youtube orientado a impresión 3D.</strong></h4>
@@ -14,7 +14,6 @@
   <a href="#instalación">Instalación</a> •
   <a href="#uso-y-customización">Uso y customización</a> •
   <a href="#redes">Redes</a>
-    <br>
 </p>
 
 <p align="center">
