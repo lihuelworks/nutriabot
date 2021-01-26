@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'avatar',
-	description: 'Get the avatar URL of the tagged user(s), or your own avatar.',
+	description: 'Obtené una imagen completa del avatar del usuario que levanta el comando.',
 	aliases: ['icon', 'pfp'],
 	execute(message) {
 		const member = message.mentions.members.first() || message.member ;
