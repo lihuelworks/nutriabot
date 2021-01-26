@@ -165,5 +165,5 @@ Para más información, puede consultar a la [documentación de DiscordJS](https
 
 # Redes
 - [👥 LinkedIn](https://www.linkedin.com/in/mathiasgomez/)
-- [📷 Instagram (Página de proyectos)](https://www.instagram.com/lihuelworks/)
+- [📷 Instagram (Portfolio de proyectos)](https://www.instagram.com/lihuelworks/)
 - [☕ Cafecito](https://cafecito.app/lihuelworks)
