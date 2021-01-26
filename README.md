@@ -5,15 +5,23 @@
 </h1>
 <h2 align="center">  <img src=".\img\discorbot_logo.svg" alt="Markdownify" width="150"></a>
 </h2>
-<h4 align="center">Bot de Discord para canales de Youtube, orientado a impresión 3D.</a>.</h4>
+<h4 align="center"><strong>Bot de Discord para canales de Youtube, orientado a impresión 3D.</strong></a></h4>
+
+<p align="center">
+  <a href="#Funciones principales">Funciones principales</a> •
+  <a href="##Stack">Stack</a> •
+  <a href="##Instalación">Instalación</a> •
+  <a href="##Uso y customización">Uso y customización</a> •
+  <a href="##Redes">Redes</a>
+</p>
 
 <p align="center">
   <br>
-    <img src="./img/ejemplo_nozzle.gif" alt="ayuda" width="500" height="150">
+    <img src="./img/ejemplo_nozzle.gif" alt="ayuda">
   <br>
 </p>
 
-El bot viene con comandos inicales dedicados a temas básicos de impresión 3D (Conceptos como nozzle)
+
 
 ## Funciones principales
 
@@ -31,7 +39,7 @@ El bot viene con comandos inicales dedicados a temas básicos de impresión 3D (
   - Eliminación masiva de mensajes
   - Recarga de comandos
 
-## Ejemplos
+### Ejemplos
 
 <p align="center">
     <img src="./img/ejemplo_nozzle.gif" alt="ayuda" width="500" height="150">
@@ -86,7 +94,7 @@ El bot viene con comandos inicales dedicados a temas básicos de impresión 3D (
     npm start
     ```
 
-# Uso y customización
+## Uso y customización
 
 La idea del bot es que los comandos e información presentada en ellos pueda ser personalizada y escalada a conveniencia del usuario. Para ello, se utiliza un "handler" dinámico.
 
@@ -149,16 +157,12 @@ El comando puede tener distintas keys/campos, que añaden funcionalidad al mismo
     ```
     - NOTA: Puede ver una lista todas las flags usadas en DiscordJS [aquí](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS).
 * **Recarga de comandos:** En caso de hacer modificaciones sobre algún comando específico bajo `./commands`, es posible recargarlo sin necesidad de reiniciar el servidor donde está alojado el bot. Para ello, basta con usar `--reload` junto con el nombre del comando. Ejemplo:
-  ```
-    module.exports = {
-      name: 'prune',
-      description: 'Bulk deletes n number of messages per number in argument',
-      permissions: 'MANAGE_CHANNELS',
-      ...
+    ```
+    ---reload prune
     ```
 Para más información, puede consultar a la [documentación de DiscordJS](https://discord.js.org/#/docs/main/stable/general/welcome) o [la guía creada alrededor de la misma](https://discordjs.guide/).
 
 # Redes
-- [ ] poner banner inline con redes y logo de cafecito
-
-<a href='https://cafecito.app/lihuelworks' rel='noopener' target='_blank'><img srcset='https://cdn.cafecito.app/imgs/buttons/button_6.png 1x, https://cdn.cafecito.app/imgs/buttons/button_6_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_6_3.75x.png 3.75x' src='https://cdn.cafecito.app/imgs/buttons/button_6.png' alt='Invitame un café en cafecito.app' /></a>
+- [👥 LinkedIn](https://www.linkedin.com/in/mathiasgomez/)
+- [📷 Instagram (Página de proyectos)](https://www.instagram.com/lihuelworks/)
+- [☕ Cafecito](https://cafecito.app/lihuelworks)
