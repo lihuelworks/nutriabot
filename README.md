@@ -8,11 +8,11 @@
 <h4 align="center"><strong>Bot de Discord para canales de Youtube, orientado a impresión 3D.</strong></a></h4>
 
 <p align="center">
-  <a href="#Funciones principales">Funciones principales</a> •
-  <a href="##Stack">Stack</a> •
-  <a href="##Instalación">Instalación</a> •
-  <a href="##Uso y customización">Uso y customización</a> •
-  <a href="##Redes">Redes</a>
+  <a href="##funciones-principales">Funciones principales</a> •
+  <a href="#stack">Stack</a> •
+  <a href="#instalación">Instalación</a> •
+  <a href="#uso-y-customización">Uso y customización</a> •
+  <a href="#redes">Redes</a>
 </p>
 
 <p align="center">
