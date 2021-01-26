@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'prune',
 	args: true,
+	permissions: 'MANAGE_CHANNELS',
 	guildOnly: true,
 	cooldown: 5,
 	usage: '<numero de mensajes a borrar>',
